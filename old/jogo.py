@@ -19,15 +19,15 @@ status_base = {
 }
 
 vocações = {
-    "Guerreiro": {"ataque": 2, "defesa": 1, "esquiva": -1},
-    "Arqueiro": {"ataque": 2, "defesa": -1, "esquiva": 1, "vida": -1},
-    "Paladino": {"ataque": 1, "defesa": 1, "esquiva": -1, "vida": 1}
+    "G": {"ataque": 2, "defesa": 1, "esquiva": -1},
+    "A": {"ataque": 2, "defesa": -1, "esquiva": 1, "vida": -1},
+    "P": {"ataque": 1, "defesa": 1, "esquiva": -1, "vida": 1}
 }
 
 raças = {
-    "Anão": {"defesa": 1, "vida": 2},
-    "Elfo": {"esquiva": 2, "ataque": 1},
-    "Humano": {"ataque": 1, "defesa": 1, "esquiva": 1, "vida": 1}
+    "A": {"defesa": 1, "vida": 2},
+    "E": {"esquiva": 2, "ataque": 1},
+    "H": {"ataque": 1, "defesa": 1, "esquiva": 1, "vida": 1}
 }
 
 
@@ -35,11 +35,13 @@ def criar_personagem():
     nome = input("Nome do personagem: ")
     personagem = status_base.copy()
     personagem["nome"] = nome
-    personagem["rodadas"] = [] 
-    escrever_devagar("Escolha sua Vocação: Guerreiro, Arqueiro, Paladino")
-    vocação = input("Vocação: ").capitalize()
-    escrever_devagar("Escolha sua Raça: Anão, Elfo, Humano")
-    raça = input("Raça: ").capitalize()
+    personagem["rodadas"] = []
+    personagem["nivel"] = 1
+    personagem["exp"] = 0
+    escrever_devagar("Escolha sua Vocação: G=Guerreiro, A=Arqueiro, P=Paladino")
+    vocação = input("Vocação: ").upper()
+    escrever_devagar("Escolha sua Raça: A=Anão, E=Elfo, H=Humano")
+    raça = input("Raça: ").upper()
 
     if vocação in vocações:
         for atributo, bonus in vocações[vocação].items():
@@ -56,7 +58,7 @@ monstros = {
     "ogro": {"ataque": 4, "defesa": 1, "vida": 12, "esquiva": 4},
     "dragao": {"ataque": 6, "defesa": 2, "vida": 20, "esquiva": 6},
     "lorde_demonio": {"ataque": 10, "defesa": 5, "vida": 45, "esquiva": 8},
-    "mimico": {"ataque": 4, "defesa": 1, "vida": 12, "esquiva": 3}
+    "mimico": {"ataque": 4, "defesa": 1, "vida": 12, "esquiva": 4}
 }
 experiencia_monstro = {
     "goblim": 50,
@@ -106,10 +108,10 @@ def combate(personagem, tipo_monstro):
     monstro = monstros[tipo_monstro].copy()
     escrever_devagar(f"Apareceu um {tipo_monstro}!")  
     while monstro["vida"] > 0 and personagem["vida"] > 0:
-        escrever_devagar("Escolha sua ação: Atacar, Defender, Esquivar, Fugir")
-        acao = input("Ação: ").capitalize()
+        escrever_devagar("Escolha sua ação: A=Atacar, D=Defender, E=Esquivar, F=Fugir")
+        acao = input("Ação: ").upper()
 
-        if acao == "Fugir":
+        if acao == "F":
             chance_fuga = randint(1, 2)
             if chance_fuga == 1:
                 escrever_devagar("Você conseguiu fugir com sucesso!")
@@ -122,13 +124,13 @@ def combate(personagem, tipo_monstro):
                 personagem["rodadas"].append(f"Fuga falhou, sofreu {max(dano_monstro, 0)} de dano")
                 continue
 
-        elif acao == "Esquivar":
+        elif acao == "E":
             esquivou = funcao_de_esquiva(personagem, monstro)
             if esquivou:
                 personagem["rodadas"].append("Esquivou com sucesso")
                 continue
         
-        elif acao == "Defender":
+        elif acao == "D":
             defesa_temporaria = personagem["defesa"] + 2
             escrever_devagar("Você se defendeu, aumentando sua defesa temporariamente!")
             personagem["rodadas"].append("Defendeu")
@@ -171,7 +173,7 @@ def subir_de_nivel(personagem):
 
 def desafio_bau(personagem):
     desafio = randint(1, 20)
-    if desafio <= 20:
+    if desafio <= 4:
         escrever_devagar("Você encontrou um baú!")
         if randint(1, 10) == 1: 
             escrever_devagar("Mas espere... o baú era um Mimético!")
@@ -180,7 +182,8 @@ def desafio_bau(personagem):
             escrever_devagar("Você recuperou 50% da sua vida!")
             personagem["vida"] = min(status_base["vida"], personagem["vida"] + status_base["vida"] // 2)
     if desafio == 20:
-          combate(personagem, "lorde_demonio")
+          tipo_monstro="lorde_demonio"
+          combate(personagem, tipo_monstro)
 
     else:
         tipo_monstro = "goblim" if desafio <= 10 else "ogro" if desafio <= 15 else "dragao"
@@ -199,6 +202,9 @@ def abrir_bau():
 
 def jogo():
     os.system("clear")
+    sair=input("voce deseja entrar na caverna? (S/N): ").upper()
+    if(sair=='N'):
+        return 0
     personagem = criar_personagem()
     exibir_status(personagem)
     while personagem["vida"] > 0:
