@@ -38,20 +38,40 @@ def criar_personagem():
     personagem["rodadas"] = []
     personagem["nivel"] = 1
     personagem["exp"] = 0
+    personagem["vida_total"] = personagem["vida"]
+
     escrever_devagar("Escolha sua Vocação: G=Guerreiro, A=Arqueiro, P=Paladino")
-    vocação = input("Vocação: ").upper()
+    vocação = ""
+    while vocação not in vocações:
+        vocação = input("Vocação: ").upper()
+        if vocação not in vocações:
+            escrever_devagar("Vocação inválida! Por favor, escolha uma vocação válida: G=Guerreiro, A=Arqueiro, P=Paladino")
+
     escrever_devagar("Escolha sua Raça: A=Anão, E=Elfo, H=Humano")
-    raça = input("Raça: ").upper()
+    raça = ""
+    while raça not in raças:
+        raça = input("Raça: ").upper()
+        if raça not in raças:
+            escrever_devagar("Raça inválida! Por favor, escolha uma raça válida: A=Anão, E=Elfo, H=Humano")
 
-    if vocação in vocações:
-        for atributo, bonus in vocações[vocação].items():
-            personagem[atributo] = personagem.get(atributo, 0) + bonus
+    
+    for atributo, bonus in vocações[vocação].items():
+        personagem[atributo] = personagem.get(atributo, 0) + bonus
 
-    if raça in raças:
-        for atributo, bonus in raças[raça].items():
-            personagem[atributo] = personagem.get(atributo, 0) + bonus
+    
+    for atributo, bonus in raças[raça].items():
+        personagem[atributo] = personagem.get(atributo, 0) + bonus
 
+    personagem["vida_total"] = personagem["vida"]
     return personagem
+def exibir_historico(personagem):
+    escrever_devagar("\nHistórico de Rodadas de Batalha:")
+    if personagem["rodadas"]:
+        for rodada, log in enumerate(personagem["rodadas"], start=1):
+            escrever_devagar(f"Rodada {rodada}: {log}")
+    else:
+        escrever_devagar("Nenhuma batalha registrada ainda.")
+    print()
 
 monstros = {
     "goblim": {"ataque": 3, "defesa": 1, "vida": 8, "esquiva": 2},
@@ -68,6 +88,14 @@ experiencia_monstro = {
     "mimico": 100
 }
 def funcao_de_esquiva(personagem, monstro):
+   
+    if "esquiva" not in personagem:
+        escrever_devagar("Erro: Atributo 'esquiva' não encontrado no personagem.")
+        return False
+    if "ataque" not in monstro:
+        escrever_devagar("Erro: Atributo 'ataque' não encontrado no monstro.")
+        return False
+
     dado20 = randint(1, 20)
     resultado_esquiva = dado20 + personagem["esquiva"]
     escrever_devagar(f"Rolando os dados= {dado20} + {personagem['esquiva']} = {resultado_esquiva}")
@@ -78,7 +106,17 @@ def funcao_de_esquiva(personagem, monstro):
     else:
         escrever_devagar("VOCÊ FOI ATINGIDO!!")
         return False
-    
+def esquiva_do_monstro(monstro, personagem):
+    dado20 = randint(1, 20)
+    resultado_esquiva = dado20 + monstro["esquiva"]
+    escrever_devagar(f"O monstro tenta esquivar: {dado20} + {monstro['esquiva']} = {resultado_esquiva}")
+
+    if resultado_esquiva >= personagem["ataque"]:
+        escrever_devagar("O monstro esquivou do seu ataque!")
+        return True
+    else:
+        return False
+        
 def ataque_geral(personagem, monstro):
     dado20 = randint(1, 20)
     resultado_ataque = dado20 + personagem["ataque"]
@@ -87,7 +125,8 @@ def ataque_geral(personagem, monstro):
     if dado20 == 20:
         escrever_devagar("Acerto Crítico!")
         return (personagem["ataque"] * 2) - monstro["defesa"]
-    
+    if esquiva_do_monstro(monstro, personagem):
+        return 0 
     if resultado_ataque >= monstro["defesa"]:
         escrever_devagar("Você atacou o monstro!!")
         return personagem["ataque"] - monstro["defesa"]
@@ -100,8 +139,7 @@ def exibir_status(personagem):
     escrever_devagar(f"Nível: {personagem['nivel']}, EXP: {personagem['exp']}/{personagem['exp_necessaria']}")
     escrever_devagar(f"Faltam {personagem['exp_necessaria'] - personagem['exp']} EXP para o próximo nível.")
     escrever_devagar("Histórico de Rodadas de Batalha:")
-    for rodada, log in enumerate(personagem["rodadas"], start=1):
-        escrever_devagar(f"Rodada {rodada}: {log}")
+
     print()
 
 def combate(personagem, tipo_monstro):
@@ -152,10 +190,16 @@ def combate(personagem, tipo_monstro):
     if personagem["vida"] > 0:
         escrever_devagar("Você venceu o combate!")
         personagem["rodadas"].append(f"Venceu o {tipo_monstro}")
+        personagem["exp"] += experiencia_monstro[tipo_monstro]
+        escrever_devagar(f"Você ganhou {experiencia_monstro[tipo_monstro]} de experiência!")
         subir_de_nivel(personagem)
     else:
         escrever_devagar("Você foi derrotado...")
         personagem["rodadas"].append("Derrotado pelo monstro")
+    ver_historico = input("Deseja ver o histórico de batalha? (S/N): ").upper()
+    if ver_historico == "S":
+        exibir_historico(personagem)
+    
 def subir_de_nivel(personagem):
   
     while personagem["exp"] >= personagem["exp_necessaria"]:
@@ -202,22 +246,32 @@ def abrir_bau():
 
 def jogo():
     os.system("clear")
-    sair=input("voce deseja entrar na caverna? (S/N): ").upper()
-    if(sair=='N'):
-        return 0
+    sair = input("Você deseja entrar na caverna? (S/N): ").upper()
+    if sair == 'N':
+        return
     personagem = criar_personagem()
     exibir_status(personagem)
+    
     while personagem["vida"] > 0:
-        desafio_bau(personagem)
-        if personagem["vida"] <= 0:
-            escrever_devagar("Você morreu... Fim de jogo.")
-            exibir_status(personagem) 
-            break
-        jogar_novamente = input("Deseja continuar? (S/N): ").upper()
-        if jogar_novamente != "S":
+        escrever_devagar("Escolha sua próxima ação: B=Enfrentar Batalha, H=Ver Histórico de Batalhas, S=Sair do Jogo")
+        opcao = input("Ação: ").upper()
+        
+        if opcao == "B":
+            desafio_bau(personagem)
+            if personagem["vida"] <= 0:
+                escrever_devagar("Você morreu... Fim de jogo.")
+                exibir_status(personagem)
+                break
+        
+        elif opcao == "H":
+            exibir_historico(personagem)
+        
+        elif opcao == "S":
             escrever_devagar("Fim de jogo.")
-            exibir_status(personagem) 
+            exibir_status(personagem)
             break
-
+        else:
+            escrever_devagar("Opção inválida! Escolha B, H ou S.")
 
 jogo()
+
