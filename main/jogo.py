@@ -186,9 +186,10 @@ def combate(personagem, tipo_monstro):
             escrever_devagar("E = Esquivar 🤸")
             escrever_devagar("F = Fugir 🏃")
             escrever_devagar("M = Ver Atributos do Monstro 🦹")
+            escrever_devagar("S = Status personagem 🧒")
             
             acao = input("Ação: ").upper()           
-            if acao in ["A", "D", "E", "F", "M"]:
+            if acao in ["A", "D", "E", "F", "M","S"]:
                 break
             else:
                 escrever_devagar("Opção inválida! Tente novamente.\n")
@@ -220,7 +221,8 @@ def combate(personagem, tipo_monstro):
             defesa_temporaria = personagem["defesa"] + 2 
             escrever_devagar("\nVocê se defendeu, aumentando sua defesa temporariamente! 🛡️\n")
             personagem["rodadas"].append("Defendeu 🛡️")
-        
+        elif acao == "S":
+             exibir_status(personagem)
         elif acao == "M":
             escrever_devagar(f"\nAtributos do {tipo_monstro}:")
             escrever_devagar(f"Ataque: {monstro['ataque']}, Defesa: {monstro['defesa']}, Vida: {monstro['vida']}, Esquiva: {monstro['esquiva']} 🦹\n")
@@ -263,7 +265,7 @@ def subir_de_nivel(personagem):
         personagem["nivel"] += 1
         escrever_devagar(f"Você subiu para o nível {personagem['nivel']}!")
               
-        for atributo in ["ataque", "defesa", "vida", "esquiva"]:
+        for atributo in ["ataque", "defesa", "vida_total", "esquiva"]:
             aumento = personagem[atributo] // 2  
             personagem[atributo] += aumento
             escrever_devagar(f"{atributo.capitalize()} aumentado para {personagem[atributo]}.")
