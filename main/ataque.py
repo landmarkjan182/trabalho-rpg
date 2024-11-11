@@ -8,7 +8,7 @@ def ataque_geral(personagem, monstro):
     escrever_devagar(f"Rolando os dados do ataque = {dado20_personagem} + {personagem['ataque']} = {resultado_ataque}")
 
     if dado20_personagem == 20:
-        escrever_devagar("Acerto Crítico!")
+        escrever_devagar("Acerto Crítico!!!")
         return (personagem["ataque"] * 2) - monstro["defesa"]
     
    
