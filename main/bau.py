@@ -10,13 +10,13 @@ def desafio_bau(personagem):
     time.sleep(1)
     desafio = randint(1, 20)
 
-    if desafio <= 20:
+    if desafio <= 4:
         escrever_devagar("\n🎉 Você encontrou um baú brilhante! 🎉\n")
         time.sleep(1)
         escrever_devagar("Abrindo o baú...")
         time.sleep(1)
 
-        if randint(1, 1) == 1: 
+        if randint(1, 10) == 1: 
             escrever_devagar("⚠️ Mas espere... algo está errado... ⚠️")
             time.sleep(1)
             escrever_devagar("\n😈 O baú se transformou em um Mimético! 😈\n")
