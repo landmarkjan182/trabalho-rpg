@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos os Personagens</title>
+</head>
+<body>
+    <h1>Lista de Personagens</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Vocação</th>
+                <th>Raça</th>
+                <th>Ataque</th>
+                <th>Defesa</th>
+                <th>Vida</th>
+                <th>Esquiva</th>
+                <th>Nível</th>
+                <th>Experiência</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for personagem in personagens %}
+                <tr>
+                    <td>{{ personagem[0] }}</td> <!-- Supondo que o nome esteja na primeira posição -->
+                    <td>{{ personagem[1] }}</td> <!-- Vocação na segunda posição -->
+                    <td>{{ personagem[2] }}</td> <!-- Raça na terceira posição -->
+                    <td>{{ personagem[3] }}</td> <!-- Ataque na quarta posição -->
+                    <td>{{ personagem[4] }}</td> <!-- Defesa na quinta posição -->
+                    <td>{{ personagem[5] }}</td> <!-- Vida na sexta posição -->
+                    <td>{{ personagem[6] }}</td> <!-- Esquiva na sétima posição -->
+                    <td>{{ personagem[7] }}</td> <!-- Nível na oitava posição -->
+                    <td>{{ personagem[8] }}</td> <!-- Experiência na nona posição -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('index') }}">Voltar à Página Inicial</a>
+</body>
+</html>
