@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolher Raça</title>
+</head>
+<body>
+    <h1>Escolha sua Raça</h1>
+    <form action="{{ url_for('criar_raca') }}" method="POST">
+        {% for key, value in racas.items() %}
+            <button type="submit" name="raca" value="{{ key }}">{{ value }}</button>
+        {% endfor %}
+    </form>
+</body>
+</html>

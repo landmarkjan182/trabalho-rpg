@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado do Combate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #eee;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .atributos {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .atributos p {
+            margin: 5px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #222;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultado do Combate</h1>
+        <p>
+            <strong>Nome do Personagem:</strong> {{ personagem.nome }}<br>
+            <strong>Experiência Ganha:</strong> {{ personagem.exp }}
+        </p>
+
+        <div class="atributos">
+            <h2>Atributos do Personagem</h2>
+            <p><strong>Vida Restante:</strong> {{ personagem.vida }}</p>
+            <p><strong>Ataque:</strong> {{ personagem.ataque }}</p>
+            <p><strong>Defesa:</strong> {{ personagem.defesa }}</p>
+            <p><strong>Esquiva:</strong> {{ personagem.esquiva }}</p>
+            <p><strong>Nível Atual:</strong> {{ personagem.nivel }}</p>
+        </div>
+
+        <a href="{{ url_for('painel_controle') }}" class="btn">Voltar ao Painel de Controle</a>
+    </div>
+</body>
+</html>

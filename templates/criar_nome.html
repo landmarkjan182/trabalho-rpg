@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Nome</title>
+</head>
+<body>
+    <h1>Escolha o Nome</h1>
+    <form action="{{ url_for('criar_nome') }}" method="POST">
+        <label for="nome">Nome do Personagem:</label>
+        <input type="text" id="nome" name="nome" required>
+        <button type="submit">Avançar</button>
+    </form>
+</body>
+</html>

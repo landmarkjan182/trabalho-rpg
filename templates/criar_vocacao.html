@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolher Vocação</title>
+</head>
+<body>
+    <h1>Escolha sua Vocação</h1>
+    <form action="{{ url_for('criar_vocacao') }}" method="POST">
+        {% for key, value in vocacoes.items() %}
+            <button type="submit" name="vocacao" value="{{ key }}">{{ value }}</button>
+        {% endfor %}
+    </form>
+</body>
+</html>

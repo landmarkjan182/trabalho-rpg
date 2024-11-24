@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caverna - Batalha</title>
+</head>
+<body>
+    <h1>Batalha na Caverna</h1>
+
+    <h2>monstros: {{ tipo_monstros | capitalize }}</h2>
+    {% if monstros %}
+    <p>Vida do monstros: {{ monstros['vida'] }} / {{ session['monstros_vida'] }}</p>
+{% else %}
+    <p>monstros não encontrado.</p>
+{% endif %}
+    <p>Ataque: {{ monstros['ataque'] }}</p>
+    <p>Defesa: {{ monstros['defesa'] }}</p>
+    <p>Esquiva: {{ monstros['esquiva'] }}</p>
+
+    <h3>Seu personagem:</h3>
+    <p>Nome: {{ personagem['nome'] }}</p>
+    <p>Raça: {{ personagem['raca'] }}</p>
+    <p>Vocação: {{ personagem['vocacao'] }}</p>
+    <p>Vida: {{ personagem['vida'] }} / {{ personagem['vida_total'] }}</p>
+    <p>Ataque: {{ personagem['ataque'] }}</p>
+    <p>Defesa: {{ personagem['defesa'] }}</p>
+    <p>Esquiva: {{ personagem['esquiva'] }}</p>
+
+    <h3>Ações</h3>
+    <form method="POST">
+        <button type="submit" name="acao" value="a">Atacar</button>
+        <button type="submit" name="acao" value="d">Defender</button>
+        <button type="submit" name="acao" value="e">Esquivar</button>
+        <button type="submit" name="acao" value="f">Fugir</button>
+        <button type="submit" name="acao" value="status_monstros">Ver Status do monstros</button>
+        <button type="submit" name="acao" value="status_personagem">Ver Status do Personagem</button>
+    </form>
+
+    {% if status_monstros %}
+        <h4>Detalhes do monstros:</h4>
+        <p>Nome: {{ monstros_nome | capitalize }}</p>
+        <p>Vida: {{ monstros['vida'] }}</p>
+        <p>Ataque: {{ monstros['ataque'] }}</p>
+        <p>Defesa: {{ monstros['defesa'] }}</p>
+        <p>Esquiva: {{ monstros['esquiva'] }}</p>
+    {% endif %}
+
+    {% if status_personagem %}
+        <h4>Detalhes do Personagem:</h4>
+        <p>Nome: {{ personagem['nome'] }}</p>
+        <p>Raça: {{ personagem['raca'] }}</p>
+        <p>Vocação: {{ personagem['vocacao'] }}</p>
+        <p>Vida: {{ personagem['vida'] }} / {{ personagem['vida_total'] }}</p>
+        <p>Ataque: {{ personagem['ataque'] }}</p>
+        <p>Defesa: {{ personagem['defesa'] }}</p>
+        <p>Esquiva: {{ personagem['esquiva'] }}</p>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
