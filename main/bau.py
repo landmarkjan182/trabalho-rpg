@@ -2,7 +2,7 @@ from escrever_devagar import escrever_devagar
 import time
 from random import randint
 from combate import combate
-import abrir_bau
+from abrir_bau import abrir_bau
 def desafio_bau(personagem):
 
     escrever_devagar("\n🗺️ Você está explorando... procurando por tesouros... 🗺️")
@@ -33,3 +33,4 @@ def desafio_bau(personagem):
         tipo_monstro = "goblim" if desafio <= 10 else "ogro" if desafio <= 15 else "dragao"
         escrever_devagar(f"\n⚔️ Você encontrou um {tipo_monstro} pronto para lutar! ⚔️")
         combate(personagem, tipo_monstro)
+     

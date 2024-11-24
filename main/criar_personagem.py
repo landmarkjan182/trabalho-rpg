@@ -53,7 +53,7 @@ def criar_personagem():
     for atributo, bonus in raças[raça].items():
         personagem[atributo] = personagem.get(atributo, 0) + bonus
 
-    personagem["vida_total"] = personagem["vida"]
+    personagem["vida"] = personagem["vida_total"]
     return personagem
 def exibir_historico(personagem):
     escrever_devagar("\nHistórico de Rodadas de Batalha:")

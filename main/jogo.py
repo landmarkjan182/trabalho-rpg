@@ -5,6 +5,8 @@ from historico import exibir_historico
 from criar_personagem import criar_personagem
 from bau import desafio_bau
 
+
+
 os.system('clear')
 
 def jogo():
